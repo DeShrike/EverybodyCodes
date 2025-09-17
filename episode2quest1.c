@@ -245,6 +245,6 @@ int main(void)
 
   arena_free(&arena);
 
-  wait_for_key();
+  // wait_for_key();
   return 0;
 }

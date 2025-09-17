@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "ansi.h"
 #include "ecodes.h"
 
@@ -54,4 +55,4 @@ Lines read_file_lines(const char* filename, Arena* arena)
 
   return lines;
 }
-
+

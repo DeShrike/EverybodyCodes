@@ -1,41 +1,36 @@
-TCFOLDER=C:\TC
-COMMON=COMMON
-OBJDIR=OBJ
-MODEL=s
-CC=tcc
-LD=tlink
-AR=tlib
-CFLAGS=-c -m$(MODEL) -I$(COMMON)
-XXCFLAGS=-c -O2 -G -Z -m$(MODEL) -I$(COMMON)
-LDFLAGS=/L$(TCFOLDER)\LIB $(TCFOLDER)\LIB\c0s.obj
-COMMONOBJS=$(OBJDIR)\utils.obj $(OBJDIR)\ecodes.obj $(OBJDIR)\arena.obj
-NAME=e2q01
-EXE=$(NAME).exe
-MAP=$(OBJDIR)\$(NAME).map
-xlflags=c:\tc\lib\c0s.obj
-xlibs=c:\tc\lib\cs.lib c:\tc\lib\maths.lib c:\tc\lib\fp87.lib
+COMMON=./common/
+OBJDIR=./obj/
+CC=gcc
+LD=gcc
+CFLAGS=-c -I$(COMMON) -O3 -Wall
+LDFLAGS=
+COMMONOBJS=$(OBJDIR)utils.o $(OBJDIR)ecodes.o $(OBJDIR)arena.o $(OBJDIR)conio.o
+NAME1=episode2quest1
+EXES=$(NAME1)
 
-all: $(EXE)
+all: $(EXES)
 
-$(EXE): $(NAME).obj $(COMMONOBJS)
-	$(LD) $(LDFLAGS) $(OBJDIR)\$(NAME).obj $(COMMONOBJS),$(EXE),$(MAP),@libs.rsp
+$(NAME1): $(OBJDIR)$(NAME1).o $(COMMONOBJS)
+	$(LD) $(LDFLAGS) $(OBJDIR)$(NAME1).o $(COMMONOBJS) -o $(NAME1)
 
 
-$(NAME).obj: $(NAME).c
-	$(CC) $(CFLAGS) -o$(OBJDIR)\$(NAME).obj $(NAME).c
+$(OBJDIR)$(NAME1).o: $(NAME1).c
+	$(CC) $(CFLAGS) $(NAME1).c -o $(OBJDIR)$(NAME1).o
 
-$(OBJDIR)\utils.obj: $(COMMON)\utils.c $(COMMON)\utils.h
-	$(CC) $(CFLAGS) -o$(OBJDIR)\utils.obj $(COMMON)\utils.c
 
-$(OBJDIR)\ecodes.obj: $(COMMON)\ecodes.c $(COMMON)\ecodes.h
-	$(CC) $(CFLAGS) -o$(OBJDIR)\ecodes.obj $(COMMON)\ecodes.c
+$(OBJDIR)utils.o: $(COMMON)utils.c $(COMMON)utils.h
+	$(CC) $(CFLAGS) -o$(OBJDIR)utils.o $(COMMON)utils.c
 
-$(OBJDIR)\arena.obj: $(COMMON)\arena.c $(COMMON)\arena.h
-	$(CC) $(CFLAGS) -o$(OBJDIR)\arena.obj $(COMMON)\arena.c 
+$(OBJDIR)ecodes.o: $(COMMON)ecodes.c $(COMMON)ecodes.h
+	$(CC) $(CFLAGS) -o$(OBJDIR)ecodes.o $(COMMON)ecodes.c
+
+$(OBJDIR)arena.o: $(COMMON)arena.c $(COMMON)arena.h
+	$(CC) $(CFLAGS) -o$(OBJDIR)arena.o $(COMMON)arena.c
+
+$(OBJDIR)conio.o: $(COMMON)conio.c $(COMMON)conio.h
+	$(CC) $(CFLAGS) -o$(OBJDIR)conio.o $(COMMON)conio.c
 
 clean:
-	del $(OBJDIR)\*.obj
-	del $(OBJDIR)\*.map
-	del *.bak
-	del *.exe
+	rm $(OBJDIR)*.o
+	rm $(NAME1)
 

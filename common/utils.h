@@ -9,18 +9,13 @@ typedef unsigned char byte;
 typedef unsigned int word;
 typedef unsigned long dword;
 
-/*
 #define min(a, b) (a) < (b) ? (a) : (b)
 #define max(a, b) (a) > (b) ? (a) : (b)
-*/
 
 float map(float value, float minin, float maxin, float minout, float maxout);
 float clamp(float value, float minimum, float maximum);
 bool ends_with(const char* str, const char* substr);
-char *args_shift(int *argc, char ***argv);
-void print_memory(void);
 int gcd(int a, int b);
-void print_roman_year(int year);
 void wait_for_key(void);
 
 /*

@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <conio.h>
+#include <string.h>
 #include <stdlib.h>
+#include "conio.h"
 #include "ansi.h"
 #include "utils.h"
 #include "arena.h"
@@ -9,21 +10,21 @@
 
 /* https://everybody.codes/story/2/quests/2 */
 
-#define NAME     "E2Q01"
+#define NAME     "E2Q1"
 #define TITLE    "The Entertainment Hub [ No. 2 ]"
 #define SUBTITLE "Quest 1: Nail Down Your Luck   "
 
-#define PART1FILE "E2Q01P1.TXT"
-#define XPART1FILE "E2Q01P1_.TXT"
-/* Test Result = 26 */
+#define PART1FILE "./data/episode2quest1part1.txt"
+#define XPART1FILE "./data/episode2quest1part1_test1.txt"
+/* Test 1 Result = 26 */
 
-#define PART2FILE "E2Q01P2.TXT"
-#define XPART2FILE "E2Q01P2_.TXT"
-/* Test Result = 115 */
+#define PART2FILE "./data/episode2quest1part2.txt"
+#define XPART2FILE "./data/episode2quest1part2_test1.txt"
+/* Test 1 Result = 115 */
 
-#define XPART3FILE "E2Q01P3.TXT"
-#define PART3FILE "E2Q01P3_.TXT"
-/* Test Result = 39 122 */
+#define PART3FILE "./data/episode2quest1part3.txt"
+#define XPART3FILE "./data/episode2quest1part3_test3.txt"
+/* Test 3 Result = 39 122 */
 
 Arena arena;
 
@@ -48,7 +49,7 @@ int drop_peg(int toss_slot, int move_index, int board_lines, Lines* data)
       x++;
       if (x >= board_width)
       {
-	x -= 2;
+        x -= 2;
       }
     }
     else if (moves[mix] == 'L')
@@ -56,7 +57,7 @@ int drop_peg(int toss_slot, int move_index, int board_lines, Lines* data)
       x--;
       if (x < 0)
       {
-	x += 2;
+	     x += 2;
       }
     }
     else
@@ -72,7 +73,7 @@ int drop_peg(int toss_slot, int move_index, int board_lines, Lines* data)
       y++;
       if (y >= board_lines)
       {
-	break;
+        break;
       }
       c = data->line[y][x];
     }
@@ -87,24 +88,29 @@ int drop_peg(int toss_slot, int move_index, int board_lines, Lines* data)
   return score;
 }
 
-int part1(void)
+void part1(void)
 {
-  int board_lines;
-  int move_lines, first_move_line;
-
-  int i, score = 0;
-  Lines data;
+  int board_lines = 0;
+  // int move_lines = 0;
+  int first_move_line = 0;
+  int score = 0;
 
   start_part(1);
 
-  data = read_file_lines(PART1FILE, &arena);
-  for (i = 0; i < data.count; ++i)
+  Lines data = read_file_lines(PART1FILE, &arena);
+  if (data.count == 0)
+  {
+    printf("No lines read\n");
+    return;
+  }
+
+  for (int i = 0; i < data.count; ++i)
   {
     if (strlen(data.line[i]) == 0)
     {
       board_lines = i;
       first_move_line = i + 1;
-      move_lines = data.count - board_lines - 1;
+      // move_lines = data.count - board_lines - 1;
     }
   }
 
@@ -114,33 +120,39 @@ int part1(void)
   printf("First Move Line: %d\n", first_move_line);
   */
 
-  for (i = first_move_line; i < data.count; ++i)
+  for (int i = first_move_line; i < data.count; ++i)
   {
     score += drop_peg(i - first_move_line + 1, i, board_lines, &data);
   }
 
-  printf("\nTotal Score: %s%d%s\n", BOLD GREEN, score, RESET);
+  printf("\nTotal score: %s%d%s\n", BOLD GREEN, score, RESET);
 }
 
-int part2(void)
+void part2(void)
 {
-  int board_lines;
-  int move_lines, first_move_line;
+  int board_lines = 0;
+  // int move_lines = 0;
+  int first_move_line = 0;
 
-  int i, score = 0, highest, this_score;
-  Lines data;
+  int score = 0, highest, this_score;
   int slot_count, slot;
 
   start_part(2);
 
-  data = read_file_lines(PART2FILE, &arena);
-  for (i = 0; i < data.count; ++i)
+  Lines data = read_file_lines(PART2FILE, &arena);
+  if (data.count == 0)
+  {
+    printf("No lines read\n");
+    return;
+  }
+
+  for (int i = 0; i < data.count; ++i)
   {
     if (strlen(data.line[i]) == 0)
     {
       board_lines = i;
       first_move_line = i + 1;
-      move_lines = data.count - board_lines - 1;
+      // move_lines = data.count - board_lines - 1;
     }
   }
 
@@ -152,7 +164,7 @@ int part2(void)
 
   slot_count = (strlen(data.line[0]) + 1) / 2;
 
-  for (i = first_move_line; i < data.count; ++i)
+  for (int i = first_move_line; i < data.count; ++i)
   {
     highest = 0;
     for (slot = 1; slot <= slot_count; ++slot)
@@ -164,23 +176,28 @@ int part2(void)
     score += highest;
   }
 
-  printf("\nTotal Score: %s%d%s\n", BOLD GREEN, score, RESET);
+  printf("\nHighest score: %s%d%s\n", BOLD GREEN, score, RESET);
 }
 
-int part3(void)
+void part3(void)
 {
-  int board_lines;
-  int move_lines, first_move_line;
-
-  int i, min_score = 0, max_score = 0;
+  int board_lines = 0;
+  int move_lines = 0;
+  int first_move_line = 0;
+  int min_score = 0, max_score = 0;
   int highest, this_score;
-  Lines data;
   int slot_count, slot;
 
   start_part(3);
 
-  data = read_file_lines(PART3FILE, &arena);
-  for (i = 0; i < data.count; ++i)
+  Lines data = read_file_lines(PART3FILE, &arena);
+  if (data.count == 0)
+  {
+    printf("No lines read\n");
+    return;
+  }
+
+  for (int i = 0; i < data.count; ++i)
   {
     if (strlen(data.line[i]) == 0)
     {
@@ -205,7 +222,7 @@ int part3(void)
   */
 
   /* TODO */
-  for (i = first_move_line; i < data.count; ++i)
+  for (int i = first_move_line; i < data.count; ++i)
   {
     for (slot = 1; slot <= slot_count; ++slot)
     {
@@ -231,4 +248,3 @@ int main(void)
   wait_for_key();
   return 0;
 }
-

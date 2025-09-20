@@ -74,7 +74,7 @@ long f_eni(long n, long exp, long mod)
 
 long f_eni2(long n, long exp, long mod)
 {
-   // printf("%ld %ld %ld -> \n", n, exp, mod);
+   printf("%ld %ld %ld -> \n", n, exp, mod);
 
    char temp[1000];
    char result[1000];
@@ -82,7 +82,7 @@ long f_eni2(long n, long exp, long mod)
    long rem[5] = {0};
    long shifts = 0;
    result[0] = 0;
-   for (int i = 0; i < exp; ++i)
+   for (long i = 0; i < exp; ++i)
    {
       score *= n;
 
@@ -91,10 +91,13 @@ long f_eni2(long n, long exp, long mod)
       {
          rem[j + 1] = rem[j];
       }
-      
-      rem[0] = score % mod;
 
-      /*
+      rem[0] = score % mod;
+      if (rem[0] == 0L)
+      {
+         printf("0 after %ld\n", i);
+      }
+/*
       for (int j = 0; j < 5; ++j)
       {
          printf("%ld ", rem[j]);
@@ -109,8 +112,6 @@ long f_eni2(long n, long exp, long mod)
       strcat(result, temp);
    }
 
-   // printf("%s\n", result);
-   // wait_for_key();
    return atol(result);
 }
 
@@ -192,7 +193,6 @@ void part2(void)
       params[i] = p;
    }
 
-   /*
    long highest = 0;
    for (int i = 0; i < params_count; ++i)
    {
@@ -200,52 +200,38 @@ void part2(void)
          params[i].a, params[i].b, params[i].c,
          params[i].x, params[i].y, params[i].z,
          params[i].m);
-      fflush(stdout);
+
+      /*
       long sum = f_eni2(params[i].a, params[i].x, params[i].m) +
                  f_eni2(params[i].b, params[i].y, params[i].m) +
                  f_eni2(params[i].c, params[i].z, params[i].m);
+      */
+      long sum = 1;
+      
       printf("%s%ld%s\n", YELLOW BOLD, sum, RESET);
       if (sum > highest)
       {
          highest = sum;
       }
-
-      // printf("eni(%ld,%ld,%ld) = %ld\n", params[i].a, params[i].x, params[i].m, f_eni2(params[i].a, params[i].x, params[i].m));
-      // printf("eni(%ld,%ld,%ld) = %ld\n", params[i].b, params[i].y, params[i].m, f_eni2(params[i].b, params[i].y, params[i].m));
-      // printf("eni(%ld,%ld,%ld) = %ld\n", params[i].c, params[i].z, params[i].m, f_eni2(params[i].c, params[i].z, params[i].m));
    }
 
    printf("\nHighest number: %s%ld%s\n", BOLD GREEN, highest, RESET);
-   */
-/*
-   long xx = f_eni2(2, 7, 5);
+
+
+   long xx = f_eni2(4, 3, 11);
+   printf(" = %ld\n", xx);
+
+   xx = f_eni2(3657, 903056852, 188);
+   printf(" = %ld\n", xx);
+
+   xx = f_eni2(3583, 9283895500, 188);
+   printf(" = %ld\n", xx);
+
+   xx = f_eni2(9716, 85920867478, 188);
    printf(" = %ld\n", xx);
 
    xx = f_eni2(4, 3, 11);
    printf(" = %ld\n", xx);
-
-   xx = f_eni2(4, 14, 11);
-   printf(" = %ld\n", xx);
-*/
-
-   long a = 903056852;
-   long x = 188;
-   long d = gcdl(a, x);
-   printf("gcd(%ld,%ld) = %ld\n", a, x, d);
-
-   a = 9283895500;
-   x = 188;
-   d = gcdl(a, x);
-   printf("gcd(%ld,%ld) = %ld\n", a, x, d);
-
-   a = 85920867478;
-   x = 188;
-   d = gcdl(a, x);
-   printf("gcd(%ld,%ld) = %ld\n", a, x, d);
-
-   printf("\n");
-
-   printf("LONG_MAX: %ld\n", LONG_MAX);
 }
 
 void part3(void)

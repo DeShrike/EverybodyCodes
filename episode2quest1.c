@@ -272,7 +272,7 @@ void part3(void)
   int k = move_lines;
   int n = slot_count;
 
-  printf("\nP(%d,%d)\n", n, k);
+  printf("\nP(%d,%d) ... please wait\n", n, k);
   permutations(items, n, k, &part3_callback, &ctx);
 
   printf("\nFinal answer: %s%d %d%s\n", BOLD GREEN, ctx.lowest, ctx.highest, RESET);

@@ -9,13 +9,14 @@ typedef unsigned char byte;
 typedef unsigned int word;
 typedef unsigned long dword;
 
-#define min(a, b) (a) < (b) ? (a) : (b)
-#define max(a, b) (a) > (b) ? (a) : (b)
+#define min(a, b) ((a) < (b) ? (a) : (b))
+#define max(a, b) ((a) > (b) ? (a) : (b))
 
 float map(float value, float minin, float maxin, float minout, float maxout);
 float clamp(float value, float minimum, float maximum);
 bool ends_with(const char* str, const char* substr);
 int gcd(int a, int b);
+long gcdl(long a, long b);
 void wait_for_key(void);
 
 /*

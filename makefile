@@ -5,17 +5,24 @@ LD=gcc
 CFLAGS=-c -I$(COMMON) -O3 -Wall
 LDFLAGS=
 COMMONOBJS=$(OBJDIR)utils.o $(OBJDIR)ecodes.o $(OBJDIR)arena.o $(OBJDIR)conio.o $(OBJDIR)combinations.o $(OBJDIR)permutations.o
-NAME1=episode2quest1
-EXES=$(NAME1)
+NAME1=episode1quest1
+NAME2=episode2quest1
+EXES=$(NAME1) $(NAME2)
 
 all: $(EXES)
 
 $(NAME1): $(OBJDIR)$(NAME1).o $(COMMONOBJS)
 	$(LD) $(LDFLAGS) $(OBJDIR)$(NAME1).o $(COMMONOBJS) -o $(NAME1)
 
+$(NAME2): $(OBJDIR)$(NAME2).o $(COMMONOBJS)
+	$(LD) $(LDFLAGS) $(OBJDIR)$(NAME2).o $(COMMONOBJS) -o $(NAME2)
+
 
 $(OBJDIR)$(NAME1).o: $(NAME1).c
 	$(CC) $(CFLAGS) $(NAME1).c -o $(OBJDIR)$(NAME1).o
+
+$(OBJDIR)$(NAME2).o: $(NAME2).c
+	$(CC) $(CFLAGS) $(NAME2).c -o $(OBJDIR)$(NAME2).o
 
 
 $(OBJDIR)utils.o: $(COMMON)utils.c $(COMMON)utils.h
@@ -39,4 +46,5 @@ $(OBJDIR)permutations.o: $(COMMON)permutations.c $(COMMON)permutations.h
 clean:
 	rm $(OBJDIR)*.o
 	rm $(NAME1)
+	rm $(NAME2)
 

@@ -51,6 +51,21 @@ int gcd(int a, int b)
   return gcd(b, a % b);
 }
 
+long gcdl(long a, long b)
+{
+  if (b > a)
+  {
+    return gcdl(b, a);
+  }
+
+  if (b == 0)
+  {
+    return a;
+  }
+
+  return gcdl(b, a % b);
+}
+
 void wait_for_key(void)
 {
   char ch;

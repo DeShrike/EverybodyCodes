@@ -2,7 +2,7 @@
 
 ## Episode 2 Quest 1
 
-Part 1 & 2 are done.
+All done.
 
 ## Quick start
 
@@ -13,4 +13,3 @@ make
 ./episode2quest1
 
 ```
-

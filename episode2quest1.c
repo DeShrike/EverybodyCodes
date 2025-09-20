@@ -6,24 +6,28 @@
 #include "utils.h"
 #include "arena.h"
 #include "ecodes.h"
-#include "da.h"
+#include "permutations.h"
 
-/* https://everybody.codes/story/2/quests/2 */
+/* https://everybody.codes/story/2/quests/1 */
 
 #define NAME     "E2Q1"
 #define TITLE    "The Entertainment Hub [ No. 2 ]"
 #define SUBTITLE "Quest 1: Nail Down Your Luck   "
 
-#define PART1FILE "./data/episode2quest1part1.txt"
-#define XPART1FILE "./data/episode2quest1part1_test1.txt"
+#define PART1FILE "./data/everybody_codes_e2_q01_p1.txt"
+#define XPART1FILE "./data/everybody_codes_e2_q01_p1_test1.txt"
 /* Test 1 Result = 26 */
 
-#define PART2FILE "./data/episode2quest1part2.txt"
-#define XPART2FILE "./data/episode2quest1part2_test1.txt"
+#define PART2FILE "./data/everybody_codes_e2_q01_p2.txt"
+#define XPART2FILE "./data/everybody_codes_e2_q01_p2_test1.txt"
 /* Test 1 Result = 115 */
 
-#define PART3FILE "./data/episode2quest1part3.txt"
-#define XPART3FILE "./data/episode2quest1part3_test3.txt"
+#define PART3FILE "./data/everybody_codes_e2_q01_p3.txt"
+#define XXXPART3FILE "./data/everybody_codes_e2_q01_p3_test1.txt"
+/* Test 1 Result = 13 43 */
+#define XXPART3FILE "./data/everybody_codes_e2_q01_p3_test2.txt"
+/* Test 2 Result = 25 66 */
+#define XPART3FILE "./data/everybody_codes_e2_q01_p3_test3.txt"
 /* Test 3 Result = 39 122 */
 
 Arena arena;
@@ -179,14 +183,49 @@ void part2(void)
   printf("\nHighest score: %s%d%s\n", BOLD GREEN, score, RESET);
 }
 
+typedef struct {
+   Lines* data;
+   int slot_count;
+   int first_move_line;
+   int move_lines;
+   int board_lines;
+   int lowest;
+   int highest;
+   int count;
+} Part3Data;
+
+bool part3_callback(int items[], size_t size, void* ctx)
+{
+   int score = 0;
+   Part3Data* data = (Part3Data*)ctx;
+   data->count++;
+   // printf("Permutation %d\n", data->count);
+
+   for (int i = 0; i < data->move_lines; ++i)
+   {
+      int slot = items[i];
+      score += drop_peg(slot, i + data->first_move_line, data->board_lines, data->data);
+   }
+   
+   if (score < data->lowest)
+   {
+      data->lowest = score;
+   }
+
+   if (score > data->highest)
+   {
+      data->highest = score;
+   }
+
+   return true;
+}
+
 void part3(void)
 {
   int board_lines = 0;
   int move_lines = 0;
   int first_move_line = 0;
-  int min_score = 0, max_score = 0;
-  int highest, this_score;
-  int slot_count, slot;
+  int slot_count;
 
   start_part(3);
 
@@ -215,22 +254,28 @@ void part3(void)
 
   slot_count = (strlen(data.line[0]) + 1) / 2;
 
-  /*
-  20 choose 6
-  C(n,k) = n! / (k! * (n-k)!)
-  =38760
-  */
-
-  /* TODO */
-  for (int i = first_move_line; i < data.count; ++i)
+  int items[slot_count];
+  for (int i = 0; i < slot_count; ++i)
   {
-    for (slot = 1; slot <= slot_count; ++slot)
-    {
-      this_score = drop_peg(slot, i, board_lines, &data);
-    }
+      items[i] = i + 1;
   }
 
-  printf("\nFinal answer: %s%d %d%s\n", BOLD GREEN, min_score, max_score, RESET);
+  Part3Data ctx = {0};
+  ctx.data = &data;
+  ctx.slot_count = slot_count;
+  ctx.first_move_line = first_move_line;
+  ctx.move_lines = move_lines;
+  ctx.board_lines = board_lines;
+  ctx.lowest = 1000;
+  ctx.highest = 0;
+
+  int k = move_lines;
+  int n = slot_count;
+
+  printf("\nP(%d,%d)\n", n, k);
+  permutations(items, n, k, &part3_callback, &ctx);
+
+  printf("\nFinal answer: %s%d %d%s\n", BOLD GREEN, ctx.lowest, ctx.highest, RESET);
 }
 
 int main(void)

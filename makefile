@@ -4,7 +4,7 @@ CC=gcc
 LD=gcc
 CFLAGS=-c -I$(COMMON) -O3 -Wall
 LDFLAGS=
-COMMONOBJS=$(OBJDIR)utils.o $(OBJDIR)ecodes.o $(OBJDIR)arena.o $(OBJDIR)conio.o
+COMMONOBJS=$(OBJDIR)utils.o $(OBJDIR)ecodes.o $(OBJDIR)arena.o $(OBJDIR)conio.o $(OBJDIR)combinations.o $(OBJDIR)permutations.o
 NAME1=episode2quest1
 EXES=$(NAME1)
 
@@ -29,6 +29,12 @@ $(OBJDIR)arena.o: $(COMMON)arena.c $(COMMON)arena.h
 
 $(OBJDIR)conio.o: $(COMMON)conio.c $(COMMON)conio.h
 	$(CC) $(CFLAGS) -o$(OBJDIR)conio.o $(COMMON)conio.c
+
+$(OBJDIR)combinations.o: $(COMMON)combinations.c $(COMMON)combinations.h
+	$(CC) $(CFLAGS) -o$(OBJDIR)combinations.o $(COMMON)combinations.c
+
+$(OBJDIR)permutations.o: $(COMMON)permutations.c $(COMMON)permutations.h
+	$(CC) $(CFLAGS) -o$(OBJDIR)permutations.o $(COMMON)permutations.c
 
 clean:
 	rm $(OBJDIR)*.o

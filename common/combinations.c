@@ -43,6 +43,8 @@ bool combinations(int arr[], size_t x, size_t y, combinations_callback process, 
    {
       return false;
    }
+   
+   return true;
 }
 
 
